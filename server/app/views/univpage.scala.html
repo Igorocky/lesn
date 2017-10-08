@@ -1,0 +1,16 @@
+@import shared.SharedConstants
+@(pageTitle: String = "")(implicit environment: play.api.Environment)
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@pageTitle</title>
+        @*<link rel="stylesheet" type="text/css" href="@controllers.routes.HomeController.css().url">*@
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("lib/bootstrap/css/bootstrap.min.css")"></link>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("lib/font-awesome/css/font-awesome.min.css")"></link>
+    </head>
+    <body>
+        <div id="@SharedConstants.UNIV_PAGE_CONTENT_DIV_ID"></div>
+        @*<script src="@utils.ServerUtils.bundleUrl("material_ui")"></script>*@
+        <script src="@utils.ServerUtils.bundleUrl("client")"></script>
+    </body>
+</html>
