@@ -26,11 +26,16 @@ object ServerUtils {
     (Session.SESSION -> write(s))
   }
 
-  def bundleUrl(projectName: String): String = {
-    val name = projectName.toLowerCase
-    Seq(s"$name-opt-bundle.js", s"$name-fastopt-bundle.js", s"$name-bundle.js")
-      .find(name => getClass.getResource(s"/public/$name") != null)
+  private val possibilities = List("fastopt", "opt")
+  private def exactlyOneOf[E](seq: Seq[E], selector: E => Boolean) = seq.find(selector).get
+  private def mustHaveSequences(prefix: String):Seq[Seq[String]] = List(
+    possibilities.map(mid => s"$prefix-$mid-library.js")
+    ,possibilities.map(mid => s"$prefix-$mid-loader.js")
+    ,possibilities.map(mid => s"$prefix-$mid.js")
+  )
+  private def resExists(name: String) = getClass.getResource(s"/public/$name") != null
+  def scriptUrls(projectName: String): Seq[String] =
+    mustHaveSequences(projectName.toLowerCase)
+      .map(exactlyOneOf(_, resExists))
       .map(controllers.routes.Assets.versioned(_).url)
-      .get
-  }
 }

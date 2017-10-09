@@ -62,8 +62,9 @@ lazy val client = (project in file("client"))
 //      "imports-loader" -> "0.7.0",
 //      "expose-loader" -> "0.7.1"
     ),
-    webpackConfigFile := Some(baseDirectory.value / "src/main/resources/my.webpack.config.js")
-//    jsDependencies += ProvidedJS / "material-ui.js"
+    webpackConfigFile := Some(baseDirectory.value / "src/main/resources/my.webpack.config.js"),
+    webpackBundlingMode := BundlingMode.LibraryOnly(),
+    emitSourceMaps := false
   ).dependsOn(sharedJs, macrosesJs)
 
 lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared")).

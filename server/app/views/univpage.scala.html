@@ -10,7 +10,8 @@
     </head>
     <body>
         <div id="@SharedConstants.UNIV_PAGE_CONTENT_DIV_ID"></div>
-        @*<script src="@utils.ServerUtils.bundleUrl("material_ui")"></script>*@
-        <script src="@utils.ServerUtils.bundleUrl("client")"></script>
+        @for(scriptUrl <- utils.ServerUtils.scriptUrls("client")){
+            <script src="@scriptUrl"></script>
+        }
     </body>
 </html>
