@@ -1,4 +1,4 @@
-package shared.components.mui
+package app.components.mui
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
@@ -16,10 +16,16 @@ object MuiComponents extends js.Object {
   val TextField: js.Dynamic = js.native
 }
 
-object MuiColor {
-  final val DEFAULT = "default"
-  final val INHERIT = "inherit"
-  final val PRIMARY = "primary"
-  final val ACCENT = "accent"
-  final val CONTRAST = "contrast"
+case class MuiColor(strValue: String)
+object MuiColors {
+  final val DEFAULT = MuiColor("default")
+  final val INHERIT = MuiColor("inherit")
+  final val PRIMARY = MuiColor("primary")
+  final val ACCENT = MuiColor("accent")
+  final val CONTRAST = MuiColor("contrast")
+}
+
+case class InputType(strValue: String)
+object InputTypes {
+  final val PASSWORD = InputType("password")
 }

@@ -1,20 +1,17 @@
-package shared.components
+package app.components
 
-import chandu0101.scalajs.react.components.Implicits._
-import chandu0101.scalajs.react.components.materialui.{MuiDialog, MuiFlatButton, MuiIconButton, MuiMuiThemeProvider, MuiRaisedButton}
+import app.components.mui.{Button, CmpBuilder, InputTypes, TextField}
 import japgolly.scalajs.react
+import japgolly.scalajs.react.vdom.VdomNode
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
-import shared.components.mui.{Button, CmpBuilder, MuiColor}
-
-import scala.scalajs.js
 
 
 object SimpleDiv {
   case class Props(text: String) {
     @inline def render = comp(this)
   }
-  case class State(isOpen: Boolean)
+  case class State(isOpen: Boolean, login: Option[String] = None, pass: Option[String] = None)
 
   private lazy val comp = ScalaComponent.builder[Props](this.getClass.getName)
     .initialState(State(false))
@@ -22,8 +19,8 @@ object SimpleDiv {
     .build
 
   class Backend($: BackendScope[Props, State]) {
-    val open = $.setState(State(true))
-    val close = $.setState(State(false))
+    val open = $.modState(_.copy(isOpen = true))
+    val close = $.modState(_.copy(isOpen = false))
 
     def handleDialogCancel: Callback = close >> Callback.info("Cancel Clicked")
 
@@ -34,6 +31,18 @@ object SimpleDiv {
 
     def render(s: State) = {
       <.div(
+        TextField(
+          value = s.login,
+          label = "Login",
+          onChange = v => $.modState(_.copy(login = Some(v)))
+        ),
+        TextField(
+          value = s.pass,
+          label = "Password",
+          onChange = v => $.modState(_.copy(pass = Some(v))),
+          typ = InputTypes.PASSWORD
+        ),
+        VdomNode.cast(s.login.getOrElse("No Login")),
         Button(text = "Open", raised = true, onClick = openDialog),
         if (s.isOpen) {
           CmpBuilder.okDialog("Title", "Some Text", handleDialogCancel)

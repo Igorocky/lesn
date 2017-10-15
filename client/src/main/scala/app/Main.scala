@@ -1,11 +1,10 @@
-package shared
+package app
 
-import chandu0101.scalajs.react.components.materialui.MuiRaisedButton
+import app.components.SimpleDiv
 import org.scalajs.dom
-import shared.components.SimpleDiv
+import shared.SharedConstants
 
 import scala.scalajs.js
-import scalacss.internal.mutable.GlobalRegistry
 
 object Main extends js.JSApp {
 

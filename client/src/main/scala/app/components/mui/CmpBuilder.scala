@@ -1,4 +1,4 @@
-package shared.components.mui
+package app.components.mui
 
 import japgolly.scalajs.react.Callback
 import japgolly.scalajs.react.vdom.html_<^._
