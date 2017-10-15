@@ -44,6 +44,7 @@ lazy val client = (project in file("client"))
   .enablePlugins(ScalaJSPlugin, ScalaJSBundlerPlugin, ScalaJSWeb)
   .settings(
     scalaVersion := scalaV,
+    scalacOptions += "-P:scalajs:sjsDefinedByDefault",
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
       "com.github.japgolly.scalajs-react" %%% "core" % "1.1.0"
@@ -56,8 +57,9 @@ lazy val client = (project in file("client"))
     ,npmDependencies in Compile ++= Seq(
       "react" -> "15.6.1",
       "react-dom" -> "15.6.1",
-      "material-ui" -> "^0.17.0",
-      "react-tap-event-plugin" -> "^2.0.1",
+//      "material-ui" -> "^0.17.0",
+      "material-ui" -> "next",
+//      "react-tap-event-plugin" -> "^2.0.1",
       "webpack-merge" -> "4.1.0"
 //      "imports-loader" -> "0.7.0",
 //      "expose-loader" -> "0.7.1"

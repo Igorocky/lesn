@@ -1,12 +1,16 @@
 @import shared.SharedConstants
 @(pageTitle: String = "")(implicit environment: play.api.Environment)
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
         <title>@pageTitle</title>
         @*<link rel="stylesheet" type="text/css" href="@controllers.routes.HomeController.css().url">*@
-        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("lib/bootstrap/css/bootstrap.min.css")"></link>
-        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("lib/font-awesome/css/font-awesome.min.css")"></link>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+        @*<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("lib/bootstrap/css/bootstrap.min.css")"></link>*@
+        @*<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("lib/font-awesome/css/font-awesome.min.css")"></link>*@
     </head>
     <body>
         <div id="@SharedConstants.UNIV_PAGE_CONTENT_DIV_ID"></div>
