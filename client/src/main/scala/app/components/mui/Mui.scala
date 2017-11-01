@@ -14,6 +14,7 @@ object MuiComponents extends js.Object {
   val DialogContentText: js.Dynamic = js.native
   val DialogTitle: js.Dynamic = js.native
   val TextField: js.Dynamic = js.native
+  val Grid: js.Dynamic = js.native
 }
 
 case class MuiColor(strValue: String)

@@ -7,16 +7,6 @@ import japgolly.scalajs.react.{Callback, Children, ReactEventFromInput}
 
 import scala.scalajs.js
 
-@js.native
-trait TextFieldEvent extends js.Object {
-  val target: EventTarget
-}
-
-@js.native
-trait EventTarget extends js.Object {
-  val value: String = js.native
-}
-
 object TextField {
   val component = react.JsComponent[js.Object, Children.Varargs, Null](MuiComponents.TextField)
 

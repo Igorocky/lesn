@@ -47,8 +47,8 @@ lazy val client = (project in file("client"))
     scalacOptions += "-P:scalajs:sjsDefinedByDefault",
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
-      "com.github.japgolly.scalajs-react" %%% "core" % "1.1.0"
-      ,"com.github.japgolly.scalajs-react" %%% "extra" % "1.1.0"
+      "com.github.japgolly.scalajs-react" %%% "core" % "1.1.1"
+      ,"com.github.japgolly.scalajs-react" %%% "extra" % "1.1.1"
       ,"com.olvind" %%% "scalajs-react-components" % "0.8.0"
       ,"com.lihaoyi" %%% "upickle" % upickleVersion
 
@@ -60,7 +60,9 @@ lazy val client = (project in file("client"))
 //      "material-ui" -> "^0.17.0",
       "material-ui" -> "next",
 //      "react-tap-event-plugin" -> "^2.0.1",
-      "webpack-merge" -> "4.1.0"
+      "webpack-merge" -> "4.1.0",
+      "semantic-ui-react" -> "0.75.1"
+//      "semantic-ui-css" -> "0.75.1"
 //      "imports-loader" -> "0.7.0",
 //      "expose-loader" -> "0.7.1"
     ),
