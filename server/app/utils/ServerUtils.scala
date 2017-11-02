@@ -2,7 +2,7 @@ package utils
 
 import play.api.i18n.Lang
 import play.api.mvc._
-import shared.messages.Languages.{EN, RU}
+import shared.messages.Languages._
 import upickle.default._
 
 object ServerUtils {
@@ -17,13 +17,11 @@ object ServerUtils {
     }
   }
 
-  def getSession(implicit requestHeader: RequestHeader): Session =
-    requestHeader.session.get(Session.SESSION)
-      .map(read[Session])
-      .getOrElse(Session(language = getDefaultLanguage(requestHeader.acceptLanguages)))
+  def getSessionId(implicit requestHeader: RequestHeader): Option[String] =
+    requestHeader.session.get(Session.SESSION_ID)
 
   def modSession(s: Session): (String, String) = {
-    (Session.SESSION -> write(s))
+    (Session.SESSION_ID -> write(s))
   }
 
   private val possibilities = List("fastopt", "opt")

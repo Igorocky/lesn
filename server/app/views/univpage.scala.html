@@ -1,5 +1,6 @@
-@import shared.SharedConstants
-@(pageTitle: String = "")(implicit environment: play.api.Environment)
+@import shared.utils.SharedConstants
+@import shared.utils.StrUtils
+@(customData: String, pageTitle: String = "")(implicit environment: play.api.Environment)
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,6 +15,7 @@
         @*<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("lib/font-awesome/css/font-awesome.min.css")"></link>*@
     </head>
     <body>
+        <div id="@SharedConstants.CUSTOM_DATA_DIV_ID" hidden><![CDATA[@StrUtils.toBytesStr(customData)]]></div>
         <div id="@SharedConstants.UNIV_PAGE_CONTENT_DIV_ID"></div>
         @for(scriptUrl <- utils.ServerUtils.scriptUrls("client")){
             <script src="@scriptUrl"></script>

@@ -1,6 +1,5 @@
-package app.components
+package app.components.custom
 
-import app.components.mui.AlignContentValues._
 import app.components.mui.AlignItemsValues._
 import app.components.mui.ContentDirectionValues._
 import app.components.mui.JustifyValues._

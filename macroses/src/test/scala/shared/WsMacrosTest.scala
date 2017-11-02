@@ -1,5 +1,6 @@
 package shared
 
+import app.{RouterBuilderUtils, WsClientMacro}
 import org.scalatest.{FlatSpec, Matchers}
 
 class WsMacrosTest extends FlatSpec with Matchers {

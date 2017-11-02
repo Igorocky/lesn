@@ -1,7 +1,7 @@
 package app.components.semanticui
 
 import japgolly.scalajs.react
-import japgolly.scalajs.react.Children
+import japgolly.scalajs.react.{Callback, Children, ReactEventFromInput}
 import japgolly.scalajs.react.vdom.VdomNode
 
 import scala.scalajs.js
@@ -26,14 +26,16 @@ object Form {
               icon: js.UndefOr[String] = js.undefined,
               iconPosition: js.UndefOr[IconPosition.Value] = js.undefined,
               placeholder: js.UndefOr[String] = js.undefined,
-              typ: js.UndefOr[String] = js.undefined
+              typ: js.UndefOr[String] = js.undefined,
+              onChange: (String) => Callback,
              )(children: VdomNode*) = {
       val props = js.Dynamic.literal(
         fluid = fluid,
         icon = icon,
         iconPosition = iconPosition.map(IconPosition.toStr),
         placeholder = placeholder,
-        `type` = typ
+        `type` = typ,
+        onChange = (e: ReactEventFromInput) => onChange(e.target.value).runNow(),
       )
       component(props)(children:_*)
     }

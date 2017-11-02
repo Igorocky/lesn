@@ -1,5 +1,6 @@
 package shared
 
+import app.InputFormUtils
 import org.scalatest.{FlatSpec, Matchers}
 
 class InputFormUtilsTest extends FlatSpec with Matchers {

@@ -3,13 +3,14 @@ package controllers
 import javax.inject._
 
 import akka.actor.ActorSystem
-import play.api.Environment
 import play.api.mvc._
-import upickle.default.write
-import utils.ServerUtils.getSession
+import play.api.{Environment, Logger}
+import shared.api.ThePageParams
+import upickle.default.{read, write}
+import utils.ServerUtils.getSessionId
+import utils.{Session, SessionStorage}
 
-import scala.concurrent.duration._
-import scala.concurrent.{ExecutionContext, Future, Promise}
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
  * This controller creates an `Action` that demonstrates how to write
@@ -27,7 +28,9 @@ import scala.concurrent.{ExecutionContext, Future, Promise}
  * a blocking API.
  */
 @Singleton
-class MainController @Inject()(cc: ControllerComponents, actorSystem: ActorSystem)
+class MainController @Inject()(cc: ControllerComponents, actorSystem: ActorSystem,
+                               val wsRouter: Router,
+                               val sessionStorage: SessionStorage)
                               (implicit private val environment: Environment,
                                implicit private val exec: ExecutionContext) extends AbstractController(cc) {
 
@@ -41,8 +44,41 @@ class MainController @Inject()(cc: ControllerComponents, actorSystem: ActorSyste
    */
   def app = Action.async {
     Future.successful(Ok(views.html.univpage(
-          pageTitle = "univpage"
+      customData = write(ThePageParams(
+        wsEntryUrl = routes.MainController.wsEntry.url
+      )),
+      pageTitle = "univpage"
     )))
+  }
+
+  def wsEntry = postRequest(read[(String, String)]) {
+    case (sessionIdOpt, (path, input)) =>
+      val sessionBefore = sessionStorage.get(sessionIdOpt)
+      Logger.debug(s"wsEntry.input: sessionBefore: '$sessionBefore', path: '$path', input: '$input'")
+      wsRouter.handle(path, sessionBefore, input)
+        .map(_.map{case (sessionAfter, res) =>
+          Logger.debug(s"wsEntry.output: sessionBefore: '$sessionBefore', sessionAfter: '$sessionAfter', path: '$path', input: '$input', result: '$res'")
+          val resp = Ok(res)
+          if (sessionAfter.userId > 0) {
+            sessionStorage.remove(sessionIdOpt)
+            sessionStorage.remove(sessionBefore.sessionId)
+            sessionStorage.put(sessionAfter.sessionId, sessionAfter)
+            resp.withCookies(Cookie(Session.SESSION_ID, sessionAfter.sessionId))
+          } else {
+            sessionStorage.remove(sessionIdOpt)
+            sessionStorage.remove(sessionBefore.sessionId)
+            sessionStorage.remove(sessionAfter.sessionId)
+            resp.discardingCookies(DiscardingCookie(Session.SESSION_ID))
+          }
+        }).getOrElse {
+        val msg = s"No handler found for path '$path'"
+        Logger.error(msg)
+        Future.successful(BadRequest(msg))
+      }
+  }
+
+  private def postRequest[T](parser: String => T)(action: (Option[String], T) => Future[Result]) = Action.async {implicit request =>
+    action(getSessionId, parser(request.body.asText.get))
   }
 
 }

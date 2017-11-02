@@ -1,5 +1,7 @@
-import com.google.inject.AbstractModule
+import com.google.inject.{AbstractModule, Provides}
 import java.time.Clock
+
+import controllers._
 
 
 /**
@@ -16,5 +18,8 @@ class Module extends AbstractModule {
 
   override def configure() = {
   }
+
+  @Provides def router(serverApiImpl: ServerApiImpl): Router =
+    serverApiImpl.router
 
 }
