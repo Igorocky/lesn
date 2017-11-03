@@ -24,7 +24,7 @@ object Form {
 
     def apply(fluid: js.UndefOr[Boolean] = js.undefined,
               icon: js.UndefOr[String] = js.undefined,
-              iconPosition: js.UndefOr[IconPosition.Value] = js.undefined,
+              iconPosition: js.UndefOr[Position.Value] = js.undefined,
               placeholder: js.UndefOr[String] = js.undefined,
               typ: js.UndefOr[String] = js.undefined,
               onChange: (String) => Callback,
@@ -32,7 +32,7 @@ object Form {
       val props = js.Dynamic.literal(
         fluid = fluid,
         icon = icon,
-        iconPosition = iconPosition.map(IconPosition.toStr),
+        iconPosition = iconPosition.map(Position.toStr),
         placeholder = placeholder,
         `type` = typ,
         onChange = (e: ReactEventFromInput) => onChange(e.target.value).runNow(),

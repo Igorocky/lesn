@@ -1,0 +1,43 @@
+package app.components.custom.userspage
+
+import app.components.custom.WindowFunc
+import app.components.semanticui._
+import japgolly.scalajs.react.vdom.html_<^._
+import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
+import shared.dto.User
+
+case class UsersPageMem(users: Option[List[User]] = None)
+
+trait UsersPageActions {
+  def usersPageMem: UsersPageMem
+}
+
+object UsersPage {
+//  implicit val propsReuse = Reusability.caseClassExcept[Props]('ctx)
+  case class Props(ctx: WindowFunc with UsersPageActions with UsersTableActions) {
+    @inline def render = comp(this)
+  }
+
+//  implicit val stateReuse = Reusability.byRef[State]
+  case class State()
+
+  private lazy val comp = ScalaComponent.builder[Props](this.getClass.getName)
+    .initialState(State())
+    .renderBackend[Backend]
+//    .configure(Reusability.shouldComponentUpdate)
+    .build
+
+  class Backend($: BackendScope[Props, State]) {
+    def render(implicit props: Props, s: State) = <.div(
+      Menu()(
+        Menu.Item(name = "users", active = true)(
+          "Users"
+        ),
+        Menu.Item(name = "logout", position = Position.Right, onClick = Callback.empty)(
+          "Logout"
+        )
+      ),
+      UsersTable.Props(props.ctx, props.ctx.usersPageMem.users).render
+    )
+  }
+}

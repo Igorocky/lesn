@@ -76,4 +76,7 @@ object ClientUtils {
 
   def whenDefined[T](opt: Option[T])(f: T => VdomNode): VdomNode =
     if (opt.isDefined) f(opt.get) else VdomNode.cast("")
+
+  def when(condition: Boolean)(elem: => VdomNode): VdomNode =
+    if (condition) elem else VdomNode.cast("")
 }

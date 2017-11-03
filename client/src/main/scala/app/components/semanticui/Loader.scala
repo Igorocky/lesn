@@ -6,16 +6,15 @@ import japgolly.scalajs.react.vdom.VdomNode
 
 import scala.scalajs.js
 
-object Segment {
-  val component = react.JsComponent[js.Object, Children.Varargs, Null](SemanticUiComponents.Segment)
+object Loader {
+  val component = react.JsComponent[js.Object, Children.Varargs, Null](SemanticUiComponents.Loader)
 
-  def apply(stacked: js.UndefOr[Boolean] = js.undefined,
-            style: js.UndefOr[js.Object] = js.undefined,
+  def apply(active: js.UndefOr[Boolean] = js.undefined,
            )(children: VdomNode*) = {
     val props = js.Dynamic.literal(
-      stacked = stacked,
-      style = style
+      active = active,
     )
     component(props)(children:_*)
   }
 }
+

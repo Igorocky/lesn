@@ -67,7 +67,7 @@ object ButtonSize extends Enumeration {
   }
 }
 
-object IconPosition extends Enumeration {
+object Position extends Enumeration {
   val Left, Right = Value
 
   def toStr(v: Value) = v match {

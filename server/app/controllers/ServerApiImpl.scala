@@ -28,7 +28,7 @@ class ServerApiImpl @Inject()(val configuration: play.api.Configuration
     .addHandlerWithSession(forMethod(_.listUsers)) {
       case (session, _) =>
         Future.successful(Right(
-          List(User(id = Some(1), login = "LLDD", role = UserRole.Admin))
+            List(User(id = Some(1), login = "LLDD", role = UserRole.Admin))
         ))
     }
 

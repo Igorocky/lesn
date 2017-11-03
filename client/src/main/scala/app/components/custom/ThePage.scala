@@ -1,6 +1,7 @@
 package app.components.custom
 
 import app._
+import app.components.custom.userspage.UsersPage
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{BackendScope, ScalaComponent}
 import shared.api.ThePageParams

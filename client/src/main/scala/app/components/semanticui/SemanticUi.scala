@@ -12,4 +12,8 @@ object SemanticUiComponents extends js.Object {
   val Form: js.Dynamic = js.native
   val Segment: js.Dynamic = js.native
   val Message: js.Dynamic = js.native
+  val Menu: js.Dynamic = js.native
+  val Table: js.Dynamic = js.native
+  val Dimmer: js.Dynamic = js.native
+  val Loader: js.Dynamic = js.native
 }

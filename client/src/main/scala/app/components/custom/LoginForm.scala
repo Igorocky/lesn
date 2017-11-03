@@ -43,9 +43,9 @@ object LoginForm {
             },
             Form(size = Size.Large)(
               Segment()(
-                Form.Input(fluid = true, icon = "user", iconPosition = IconPosition.Left, placeholder = "Login",
+                Form.Input(fluid = true, icon = "user", iconPosition = Position.Left, placeholder = "Login",
                   onChange = v => $.modState(_.copy(login = v)))(),
-                Form.Input(fluid = true, icon = "lock", iconPosition = IconPosition.Left, placeholder = "Password",
+                Form.Input(fluid = true, icon = "lock", iconPosition = Position.Left, placeholder = "Password",
                   onChange = v => $.modState(_.copy(pass = v)), typ = "password")(),
                 Button(primary = true, color = Color.Teal, fluid = true, size = ButtonSize.Large,
                   onClick = props.ctx.logIn(s.login, s.pass){

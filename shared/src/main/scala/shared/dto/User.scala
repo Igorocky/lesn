@@ -1,6 +1,12 @@
 package shared.dto
 
-case class UserRole(code: Int)
+case class UserRole(code: Int) {
+  def toStr = code match {
+    case 0 => "Admin"
+    case 1 => "Teacher"
+    case 2 => "Pupil"
+  }
+}
 
 object UserRole {
   final val Admin = UserRole(0)
