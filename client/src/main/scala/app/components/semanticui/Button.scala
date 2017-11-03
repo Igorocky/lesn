@@ -9,13 +9,15 @@ import scala.scalajs.js
 object Button {
   val component = react.JsComponent[js.Object, Children.Varargs, Null](SemanticUiComponents.Button)
 
-  def apply(onClick: Callback = Callback.empty,
+  def apply(key: js.UndefOr[String] = js.undefined,
+            onClick: Callback = Callback.empty,
             primary: js.UndefOr[Boolean] = js.undefined,
             fluid: js.UndefOr[Boolean] = js.undefined,
             size: js.UndefOr[ButtonSize.Value] = js.undefined,
             color: js.UndefOr[Color.Value] = js.undefined
            )(children: VdomNode*) = {
     val props = js.Dynamic.literal(
+      key = key,
       onClick = onClick.toJsCallback,
       primary = primary,
       fluid = fluid,

@@ -56,17 +56,23 @@ case class RouterBuilder(handlers: List[RequestHandler] = Nil) extends Router {
     addHandler(signature._1, signature._2, signature._3)((s, i) => f(i).map(o => (s,o)))
   }
 
-  def addHandlerWithSession[I, O](signature: (String, String => I, O => String))
-                                 (f: (Session, I) => Future[(Session, O)])
-                                 (implicit ec: ExecutionContext): RouterBuilder = {
+  def addHandlerWithSessionMod[I, O](signature: (String, String => I, O => String))
+                                    (f: (Session, I) => Future[(Session, O)])
+                                    (implicit ec: ExecutionContext): RouterBuilder = {
     addHandler(signature._1, signature._2, signature._3)(f)
   }
 
-  def addHandlerOfFormSubmit[I, S](signature: (String, String => I, SubmitResponse[I,S] => String))
-                                  (accessValidator: Session => List[String], formMethods: FormMethods[I])
-                                  (onFormIsValid: (Session, I) => Future[(Session, S)])
-                                  (implicit ec: ExecutionContext): RouterBuilder = {
-    addHandlerWithSession(signature._1, signature._2, signature._3){
+  def addHandlerWithSession[I, O](signature: (String, String => I, O => String))
+                                    (f: (Session, I) => Future[O])
+                                    (implicit ec: ExecutionContext): RouterBuilder = {
+    addHandlerWithSessionMod(signature)((ses, inp) => f(ses, inp).map(o => (ses, o)))
+  }
+
+  def addHandlerOfFormSubmitModSession[I, S](signature: (String, String => I, SubmitResponse[I,S] => String))
+                                            (accessValidator: Session => List[String], formMethods: FormMethods[I])
+                                            (onFormIsValid: (Session, I) => Future[(Session, S)])
+                                            (implicit ec: ExecutionContext): RouterBuilder = {
+    addHandlerWithSessionMod(signature._1, signature._2, signature._3){
       case (session, data) =>
         val accessErrors = accessValidator(session)
         if (accessErrors.nonEmpty) {
@@ -82,6 +88,14 @@ case class RouterBuilder(handlers: List[RequestHandler] = Nil) extends Router {
           }
         }
     }
+
+  }
+
+  def addHandlerOfFormSubmit[I, S](signature: (String, String => I, SubmitResponse[I,S] => String))
+                                            (accessValidator: Session => List[String], formMethods: FormMethods[I])
+                                            (onFormIsValid: (Session, I) => Future[S])
+                                            (implicit ec: ExecutionContext): RouterBuilder = {
+    addHandlerOfFormSubmitModSession(signature)(accessValidator, formMethods)((ses, inp) => onFormIsValid(ses, inp).map(o => (ses, o)))
 
   }
 }

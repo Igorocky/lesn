@@ -28,6 +28,9 @@ lazy val server = (project in file("server")).settings(
     ,"com.lihaoyi" %%% "upickle" % upickleVersion
     ,"com.github.japgolly.scalacss" %% "core" % "0.5.3"
     ,"com.h2database" % "h2" % "1.4.192"
+    ,"org.apache.commons" % "commons-lang3" % "3.6"
+    ,"org.apache.commons" % "commons-io" % "1.3.2"
+
 
     ,"org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % Test
     ,"org.scalacheck" %% "scalacheck" % "1.13.4" % Test
@@ -95,18 +98,3 @@ lazy val macroses = (crossProject.crossType(CrossType.Pure) in file("macroses"))
 
 lazy val macrosesJvm = macroses.jvm
 lazy val macrosesJs = macroses.js
-
-//from starter example=========================================================
-//name := """lesn"""
-//
-//version := "1.0-SNAPSHOT"
-//
-//lazy val root = (project in file(".")).enablePlugins(PlayScala)
-//
-//resolvers += Resolver.sonatypeRepo("snapshots")
-//
-//scalaVersion := "2.12.2"
-//
-//libraryDependencies += guice
-//libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % Test
-//libraryDependencies += "com.h2database" % "h2" % "1.4.194"

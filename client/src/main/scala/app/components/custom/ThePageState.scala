@@ -8,11 +8,16 @@ case class ThePageState(modState: (ThePageState => ThePageState) => Callback = n
                         getState: () => ThePageState = null,
                         windowFuncMem: WindowFuncMem = WindowFuncMem(),
                         globalMem: GlobalMem = GlobalMem(),
-                        serverApi: WsClient[ServerApi] = null) extends WindowFunc with GlobalContext {
+                        routerMem: RouterMem = RouterMem(),
+                        serverApi: WsClient[ServerApi] = null) extends WindowFunc
+  with GlobalContext with Router {
 
   override protected def modWindowFuncMem(f: WindowFuncMem => WindowFuncMem): Callback =
     modState(s => s.copy(windowFuncMem = f(s.windowFuncMem)))
 
   override protected def modGlobalMem(f: GlobalMem => GlobalMem): Callback =
     modState(s => s.copy(globalMem = f(s.globalMem)))
+
+  override protected def modRouterMem(f: RouterMem => RouterMem): Callback =
+    modState(s => s.copy(routerMem = f(s.routerMem)))
 }

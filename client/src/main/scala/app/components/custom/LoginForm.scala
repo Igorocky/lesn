@@ -5,11 +5,12 @@ import app.components.semanticui._
 import japgolly.scalajs.react.extra.Reusability
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
+import shared.dto.User
 
 import scala.scalajs.js
 
 trait LoginFormActions {
-  def logIn(login: String, pass: String)(cb: Either[String, String] => Callback): Callback
+  def logIn(login: String, pass: String)(cb: Either[String, User] => Callback): Callback
 }
 
 object LoginForm {

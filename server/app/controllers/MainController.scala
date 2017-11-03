@@ -3,9 +3,12 @@ package controllers
 import javax.inject._
 
 import akka.actor.ActorSystem
+import db.PrintSchema
+import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import play.api.mvc._
 import play.api.{Environment, Logger}
 import shared.api.ThePageParams
+import slick.jdbc.JdbcProfile
 import upickle.default.{read, write}
 import utils.ServerUtils.getSessionId
 import utils.{Session, SessionStorage}
@@ -30,18 +33,13 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class MainController @Inject()(cc: ControllerComponents, actorSystem: ActorSystem,
                                val wsRouter: Router,
-                               val sessionStorage: SessionStorage)
+                               val sessionStorage: SessionStorage,
+                               protected val dbConfigProvider: DatabaseConfigProvider)
                               (implicit private val environment: Environment,
-                               implicit private val exec: ExecutionContext) extends AbstractController(cc) {
+                               implicit private val exec: ExecutionContext) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
 
-  /**
-   * Creates an Action that returns a plain text message after a delay
-   * of 1 second.
-   *
-   * The configuration in the `routes` file means that this method
-   * will be called when the application receives a `GET` request with
-   * a path of `/message`.
-   */
+  new PrintSchema()
+
   def app = Action.async {
     Future.successful(Ok(views.html.univpage(
       customData = write(ThePageParams(
