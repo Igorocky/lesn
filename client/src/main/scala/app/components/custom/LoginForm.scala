@@ -1,5 +1,6 @@
 package app.components.custom
 
+import app.ClientUtils.whenDefined
 import app.components.semanticui._
 import japgolly.scalajs.react.extra.Reusability
 import japgolly.scalajs.react.vdom.html_<^._
@@ -34,6 +35,11 @@ object LoginForm {
             Header(as = "h2", color = Color.Teal, textAlign = TextAlign.Center)(
               "Log-in to your account"
             ),
+            whenDefined(s.errorMsg){ msg=>
+              Message(color = Color.Red)(
+                Message.Header()(msg)
+              )
+            },
             Form(size = Size.Large)(
               Segment()(
                 Form.Input(fluid = true, icon = "user", iconPosition = IconPosition.Left, placeholder = "Login",

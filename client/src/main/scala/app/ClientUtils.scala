@@ -1,13 +1,14 @@
 package app
 
+import japgolly.scalajs.react.vdom.VdomNode
 import japgolly.scalajs.react.{Callback, CallbackTo}
 import org.scalajs.dom.ext.Ajax
 import upickle.default.{read, write}
 
 import scala.concurrent.Future
+import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 import scala.scalajs.js
 import scala.util.{Failure, Success, Try}
-import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
 object ClientUtils {
   implicit class jsObjOps[T](jsObj: js.Object) {
@@ -72,4 +73,7 @@ object ClientUtils {
       println(s"stubbed $stubName.doCall invoked: path = '$path', dataStr = '$dataStr'")
     }
   }
+
+  def whenDefined[T](opt: Option[T])(f: T => VdomNode): VdomNode =
+    if (opt.isDefined) f(opt.get) else VdomNode.cast("")
 }
