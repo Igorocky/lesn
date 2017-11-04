@@ -30,10 +30,10 @@ object Table {
   object Row {
     val component = react.JsComponent[js.Object, Children.Varargs, Null](SemanticUiComponents.Table.Row)
 
-    def apply(key: js.UndefOr[String] = js.undefined,
+    def apply(key: js.UndefOr[Any] = js.undefined,
              )(children: VdomNode*) = {
       val props = js.Dynamic.literal(
-        key = key,
+        key = key.asInstanceOf[js.Any],
       )
       component(props)(children:_*)
     }

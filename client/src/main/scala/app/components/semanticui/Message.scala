@@ -11,10 +11,12 @@ object Message {
 
   def apply(color: js.UndefOr[Color.Value] = js.undefined,
             icon: js.UndefOr[String] = js.undefined,
+            key: js.UndefOr[Any] = js.undefined,
            )(children: VdomNode*) = {
     val props = js.Dynamic.literal(
       color = color.map(Color.toStr),
       icon = icon,
+      key = key.asInstanceOf[js.Any],
     )
     component(props)(children:_*)
   }

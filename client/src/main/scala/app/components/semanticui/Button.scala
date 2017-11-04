@@ -14,7 +14,8 @@ object Button {
             primary: js.UndefOr[Boolean] = js.undefined,
             fluid: js.UndefOr[Boolean] = js.undefined,
             size: js.UndefOr[ButtonSize.Value] = js.undefined,
-            color: js.UndefOr[Color.Value] = js.undefined
+            color: js.UndefOr[Color.Value] = js.undefined,
+            style: js.UndefOr[js.Object] = js.undefined,
            )(children: VdomNode*) = {
     val props = js.Dynamic.literal(
       key = key,
@@ -23,6 +24,7 @@ object Button {
       fluid = fluid,
       size = size.map(ButtonSize.toStr),
       color = color.map(Color.toStr),
+      style = style
     )
     component(props)(children:_*)
   }

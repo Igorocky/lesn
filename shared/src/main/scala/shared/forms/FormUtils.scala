@@ -40,7 +40,7 @@ object InputValidation {
   }
 }
 
-case class FormField[T,F](name: String, getter: FormMethods[T]#Extractor[F], setter: FormMethods[T]#Setter[F], validation: InputValidation[F]) {
+case class FormField[T,F](name: String, label: String, getter: FormMethods[T]#Extractor[F], setter: FormMethods[T]#Setter[F], validation: InputValidation[F]) {
   def validate(formData: FormData[T]): FormData[T] = {
     val errorMsgs = validate(formData.data, formData.language)
     if (errorMsgs.isEmpty) {
@@ -76,7 +76,7 @@ trait FormMethods[T] extends shared.utils.Enum[FormField[T, _]] with InputFormUt
     if (newLanguage == formData.language) formData
     else validate(formData.copy(language = newLanguage))
 
-  override protected def fieldFromGetterAndSetter[F](name: String, get: Extractor[F], set: Setter[F])
+  override protected def fieldFromGetterAndSetter[F](name: String, label: String, get: Extractor[F], set: Setter[F])
                                                     (validation: InputValidation[F]): FormField[T, F] =
-    addElem(FormField(name, get, set, validation))
+    addElem(FormField(name, label, get, set, validation))
 }

@@ -1,5 +1,7 @@
 package shared.dto
 
+import shared.messages.{Language, Languages}
+
 case class UserRole(code: Int) {
   def toStr = code match {
     case 0 => "Admin"
@@ -21,11 +23,13 @@ object UserRole {
 case class UserFull(id: Option[Long] = None,
                 role: UserRole = UserRole.Pupil,
                 login: String = "",
+                language: Language = Languages.EN,
                 salt: String = "",
                 passHash: String = ""
                )
 
 case class User(id: Option[Long] = None,
                 role: UserRole = UserRole.Pupil,
-                login: String
+                login: String = "",
+                language: Language = Languages.EN
                )

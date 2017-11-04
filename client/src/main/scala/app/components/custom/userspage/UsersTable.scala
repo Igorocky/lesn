@@ -36,7 +36,7 @@ object UsersTable {
     .build
 
   class Backend($: BackendScope[Props, State]) extends TimerSupport {
-    def render(implicit props: Props, s: State) = <.div(
+    def render(implicit props: Props, s: State) = Container()(
       props.users match {
         case None => ClientUtils.when(s.loadDelayPassed) {
           Segment(style = js.Dynamic.literal(height = "100px"))(
@@ -64,7 +64,7 @@ object UsersTable {
               case users =>
                 Table.Body()(
                   users.toVdomArray{user=>
-                    Table.Row(key = user.id.get.toString)(
+                    Table.Row(key = user.id.get)(
                       Table.Cell()(user.login),
                       Table.Cell()(user.role.toStr)
                     )

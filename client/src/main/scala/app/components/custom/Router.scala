@@ -8,8 +8,6 @@ trait Router {
 
   protected def modRouterMem(f: RouterMem => RouterMem): Callback
 
-  private def mod(f: RouterMem => RouterMem): Callback = modRouterMem(f)
-
-  def navigateToLoginPage = mod(_.copy(curPath = Login))
-  def navigateToUsersPage = mod(_.copy(curPath = Users))
+  def navigateToLoginPage = modRouterMem(_.copy(curPath = Login))
+  def navigateToUsersPage = modRouterMem(_.copy(curPath = Users))
 }

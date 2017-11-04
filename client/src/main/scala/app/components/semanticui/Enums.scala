@@ -75,3 +75,51 @@ object Position extends Enumeration {
     case Right => "right"
   }
 }
+
+object Widths extends Enumeration {
+  val Equal = Value
+
+  def toStr(v: Value) = v match {
+    case Equal => "equal"
+  }
+}
+
+object Width extends Enumeration {
+  val _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16,
+    One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Eleven, Twelve, Thirteen, Fourteen, Fifteen, Sixteen = Value
+
+  def toStr(v: Value) = v match {
+    case _1 => "1"
+    case _2 => "2"
+    case _3 => "3"
+    case _4 => "4"
+    case _5 => "5"
+    case _6 => "6"
+    case _7 => "7"
+    case _8 => "8"
+    case _9 => "9"
+    case _10 => "10"
+    case _11 => "11"
+    case _12 => "12"
+    case _13 => "13"
+    case _14 => "14"
+    case _15 => "15"
+    case _16 => "16"
+    case One => "one"
+    case Two => "two"
+    case Three => "three"
+    case Four => "four"
+    case Five => "five"
+    case Six => "six"
+    case Seven => "seven"
+    case Eight => "eight"
+    case Nine => "nine"
+    case Ten => "ten"
+    case Eleven => "eleven"
+    case Twelve => "twelve"
+    case Thirteen => "thirteen"
+    case Fourteen => "fourteen"
+    case Fifteen => "fifteen"
+    case Sixteen => "sixteen"
+  }
+}

@@ -5,6 +5,7 @@ import java.time.{ZoneOffset, ZonedDateTime}
 
 import db.TypeConversions._
 import shared.dto._
+import shared.messages.{Language, Languages}
 import shared.utils.StrUtils
 import slick.jdbc.H2Profile.api._
 import upickle.default._
@@ -44,16 +45,21 @@ object TypeConversions {
     _.code,
     UserRole.fromInt
   )
+  implicit val languageColumnType = MappedColumnType.base[Language, String](
+    _.code,
+    Languages.fromString
+  )
 }
 
 class UserTable(tag: Tag) extends Table[UserFull](tag, "USERS") with HasId {
   override def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def role = column[UserRole]("role")
   def login = column[String]("login")
+  def language = column[Language]("lang")
   def salt = column[String]("salt")
   def passHash = column[String]("passHash")
 
-  def * = (id.?, role, login, salt, passHash) <> (UserFull.tupled, UserFull.unapply)
+  def * = (id.?, role, login, language, salt, passHash) <> (UserFull.tupled, UserFull.unapply)
 }
 
 
