@@ -1,6 +1,6 @@
 package app.components.forms
 
-import app.components.semanticui.Form
+import app.components.semanticui.{Form, Popup, PopupPosition}
 import japgolly.scalajs.react
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{Callback, _}
@@ -35,8 +35,8 @@ object FormTextField {
   protected class Backend($: BackendScope[Props, State]) {
     var theInput: html.Element = _
 
-    def render(props: Props, state: State) =
-      Form.Field(error = props.errors.nonEmpty)(
+    def render(props: Props, state: State) = {
+      val field = Form.Field(error = props.errors.nonEmpty)(
         <.label(props.placeholder),
         <.input.text.ref(theInput = _)(
           ^.placeholder:=props.placeholder,
@@ -53,6 +53,17 @@ object FormTextField {
           }
         )
       )
+      if (props.errors.nonEmpty) {
+        Popup(
+          trigger = Some(field),
+          content = props.errors.mkString("; "),
+          position = PopupPosition.BottomLeft
+        )()
+      } else {
+        field
+      }
+    }
+
   }
 
   private lazy val comp = react.ScalaComponent.builder[Props](this.getClass.getName)

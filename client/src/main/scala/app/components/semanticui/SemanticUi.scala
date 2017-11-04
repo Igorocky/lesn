@@ -19,4 +19,5 @@ object SemanticUiComponents extends js.Object {
   val Label: js.Dynamic = js.native
   val Container: js.Dynamic = js.native
   val Input: js.Dynamic = js.native
+  val Popup: js.Dynamic = js.native
 }

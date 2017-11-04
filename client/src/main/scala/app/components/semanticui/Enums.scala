@@ -84,6 +84,21 @@ object Widths extends Enumeration {
   }
 }
 
+object PopupPosition extends Enumeration {
+  val TopLeft, TopRight, BottomRight, BottomLeft, RightCenter, LeftCenter, TopCenter, BottomCenter = Value
+
+  def toStr(v: Value) = v match {
+    case TopLeft => "top left"
+    case TopRight => "top right"
+    case BottomRight => "bottom right"
+    case BottomLeft => "bottom left"
+    case RightCenter => "right center"
+    case LeftCenter => "left center"
+    case TopCenter => "top center"
+    case BottomCenter => "bottom center"
+  }
+}
+
 object Width extends Enumeration {
   val _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16,
     One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Eleven, Twelve, Thirteen, Fourteen, Fifteen, Sixteen = Value
