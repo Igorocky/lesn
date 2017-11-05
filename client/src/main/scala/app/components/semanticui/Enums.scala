@@ -53,6 +53,21 @@ object Size extends Enumeration {
   }
 }
 
+object HeaderSize extends Enumeration {
+  val Mini, Tiny, Small, Medium, Large, Big, Huge, Massive = Value
+
+  def toStr(v: Value) = v match {
+    case Mini => "mini"
+    case Tiny => "tiny"
+    case Small => "small"
+    case Medium => "medium"
+    case Large => "large"
+    case Big => "big"
+    case Huge => "huge"
+    case Massive => "massive"
+  }
+}
+
 object ButtonSize extends Enumeration {
   val Mini, Tiny, Small, Large, Big, Huge, Massive = Value
 

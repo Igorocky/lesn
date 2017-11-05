@@ -39,7 +39,6 @@ object FormSelect {
     .build
 
   protected class Backend($: BackendScope[Props, State]) {
-    var theInput: html.Element = _
 
     def render(props: Props, state: State) = Form.Select(
       placeholder = props.placeholder,

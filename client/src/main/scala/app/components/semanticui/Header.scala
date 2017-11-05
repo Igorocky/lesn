@@ -11,11 +11,13 @@ object Header {
 
   def apply(as: js.UndefOr[String] = js.undefined,
             textAlign: js.UndefOr[TextAlign.Value] = js.undefined,
-            color: js.UndefOr[Color.Value] = js.undefined
+            color: js.UndefOr[Color.Value] = js.undefined,
+            size: js.UndefOr[HeaderSize.Value] = js.undefined,
            )(children: VdomNode*) = {
     val props = js.Dynamic.literal(
       as = as,
       textAlign = textAlign.map(TextAlign.toStr),
+      size = size.map(HeaderSize.toStr),
       color = color.map(Color.toStr),
     )
     component(props)(children:_*)
