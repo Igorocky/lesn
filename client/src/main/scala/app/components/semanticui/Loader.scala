@@ -10,9 +10,11 @@ object Loader {
   val component = react.JsComponent[js.Object, Children.Varargs, Null](SemanticUiComponents.Loader)
 
   def apply(active: js.UndefOr[Boolean] = js.undefined,
+            inverted: js.UndefOr[Boolean] = js.undefined,
            )(children: VdomNode*) = {
     val props = js.Dynamic.literal(
       active = active,
+      inverted = inverted,
     )
     component(props)(children:_*)
   }

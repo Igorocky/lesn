@@ -1,31 +1,46 @@
 package app.components.custom
 
 import japgolly.scalajs.react.Callback
+import japgolly.scalajs.react.vdom.VdomNode
+import japgolly.scalajs.react.vdom.html_<^._
 
-case class WindowFuncMem(waitPane: Boolean = false,
-                         okDiagText: Option[String] = None,
-                         okCancelDiagText: Option[String] = None,
-                         onOk: Callback = Callback.empty,
-                         onCancel: Callback = Callback.empty)
+case class ConfirmDialogParams(content: String,
+                               cancelButton: Option[VdomNode],
+                               confirmButton: Option[VdomNode],
+                               onCancel: Callback,
+                               onConfirm: Callback
+                              )
+
+case class WindowFuncMem(confirmDialogParams: Option[ConfirmDialogParams] = None,
+                         waitText: Option[String] = None
+                        )
 
 trait WindowFunc {
   protected def modWindowFuncMem(f: WindowFuncMem => WindowFuncMem): Callback
 
   private def mod(f: WindowFuncMem => WindowFuncMem): Callback = modWindowFuncMem(f)
 
-  def openWaitPane: Callback = mod(_.copy(waitPane = true))
+  def confirmDialog(content: String = "Are you sure?",
+                    cancelButton: Option[VdomNode] = Some("Cancel"),
+                    confirmButton: Option[VdomNode] = Some("OK"),
+                    onCancel: Callback = Callback.empty,
+                    onConfirm: Callback = Callback.empty) = mod(_.copy(confirmDialogParams = Some(ConfirmDialogParams(
+    content = content,
+    cancelButton = cancelButton,
+    confirmButton = confirmButton,
+    onCancel = onCancel >> mod(_.copy(confirmDialogParams = None)),
+    onConfirm = onConfirm >> mod(_.copy(confirmDialogParams = None))
+  ))))
 
-  def closeWaitPane: Callback = mod(_.copy(waitPane = false))
+  def showError(throwable: Throwable): Callback = showError(throwable, Callback.empty)
 
-  def openOkDialog(text: String): Callback = mod(_.copy(okDiagText = Some(text)))
+  def showError(throwable: Throwable, onOk: Callback): Callback = confirmDialog(
+    content = "Error: " + throwable,
+    onConfirm = onOk,
+    cancelButton = Some(<.span())
+  )
 
-  def closeOkDialog: Callback = mod(_.copy(okDiagText = None))
+  def openWaitPane(text: String = ""): Callback = mod(_.copy(waitText = Some(text)))
 
-  def openOkCancelDialog(text: String, onOk: Callback, onCancel: Callback): Callback =
-    mod(_.copy(okCancelDiagText = Some(text), onOk = onOk, onCancel = onCancel))
-
-  def closeOkCancelDialog: Callback =
-    mod(_.copy(okCancelDiagText = None, onOk = Callback.empty, onCancel = Callback.empty))
-
-  def showError(throwable: Throwable): Callback = openOkDialog("Error: " + throwable)
+  def closeWaitPane: Callback = mod(_.copy(waitText = None))
 }

@@ -52,6 +52,18 @@ object ClientUtils {
         }
     }
 
+  def post[I, O](url: String, path: String,
+                 dataStr: String,
+                 reader: String => O
+                )(s: Try[O] => Callback): Callback =
+    Callback.future {
+      Ajax.post(url = url, data = write((path, dataStr)))
+        .map(resp => s(Success(reader(resp.responseText))))
+        .recover {
+          case throwable => s(Failure(throwable))
+        }
+    }
+
   def createWsClient[A](url: String): WsClient[A] = new WsClient[A] {
     override def doCall[O](path: String,
                            dataStr: String,
@@ -63,6 +75,15 @@ object ClientUtils {
       reader,
       errHnd
     )
+
+    override def doCall[O](path: String,
+                           dataStr: String,
+                           reader: String => O): (Try[O] => Callback) => Callback = ClientUtils.post(
+      url,
+      path,
+      dataStr,
+      reader
+    )
   }
 
   def stubWsClient[A](stubName: String): WsClient[A] = new WsClient[A] {
@@ -70,6 +91,12 @@ object ClientUtils {
                            dataStr: String,
                            reader: String => O,
                            errHnd: Throwable => Callback): (O => Callback) => Callback = outputConsumer => Callback{
+      println(s"stubbed $stubName.doCall invoked: path = '$path', dataStr = '$dataStr'")
+    }
+
+    override def doCall[O](path: String,
+                           dataStr: String,
+                           reader: String => O): (Try[O] => Callback) => Callback = outputConsumer => Callback{
       println(s"stubbed $stubName.doCall invoked: path = '$path', dataStr = '$dataStr'")
     }
   }

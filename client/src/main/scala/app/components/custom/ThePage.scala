@@ -1,7 +1,9 @@
 package app.components.custom
 
+import app.ClientUtils.whenDefined
 import app._
 import app.components.custom.userspage.UsersPage
+import app.components.semanticui.{Confirm, Dimmer, Loader}
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{BackendScope, ScalaComponent}
 import shared.api.ThePageParams
@@ -31,6 +33,22 @@ object ThePage {
       case DevHome => DevHomePage.Props(s).render
       case Login => LoginForm.Props(s).render
       case Users => UsersPage.Props(s).render
-    })
+    },
+      whenDefined(s.windowFuncMem.confirmDialogParams) { params =>
+        Confirm(
+          content = Some(params.content),
+          cancelButton = params.cancelButton,
+          confirmButton = params.confirmButton,
+          onCancel = params.onCancel,
+          onConfirm = params.onConfirm,
+          open = true
+        )()
+      },
+      whenDefined(s.windowFuncMem.waitText) { text =>
+        Dimmer(active = true, inverted = true)(
+          Loader(inverted = true)(text)
+        )
+      }
+    )
   }
 }

@@ -35,7 +35,7 @@ object UsersPage {
         if (s.newUserFormOpened) {
           CreateUserForm.Props(
             ctx = props.ctx,
-            cancelCreatingUser = $.modState(_.copy(newUserFormOpened = false)),
+            cancelCreatingUser = props.ctx.confirmDialog(onConfirm = $.modState(_.copy(newUserFormOpened = false))),
             userCreated = newUser => props.ctx.userCreated(newUser) >> $.modState(_.copy(newUserFormOpened = false))
           ).render
         } else {

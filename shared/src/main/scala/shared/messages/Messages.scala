@@ -27,6 +27,11 @@ object Messages {
     EN -> s"access denied"
   )
 
+  def pleaseWait(implicit lang: Language) = Msg(
+    RU -> s"Пожалуйста, подождите",
+    EN -> s"Please wait"
+  )
+
   def fieldsShouldHaveSameValue(field1: String, field2: String)(implicit lang: Language) = Msg(
     RU -> s"поля '$field1' и '$field2' должны иметь одинаковое значение",
     EN -> s"'$field1' and '$field2' fields should have same value",

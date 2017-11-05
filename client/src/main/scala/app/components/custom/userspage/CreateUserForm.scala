@@ -11,7 +11,7 @@ import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import shared.dto.{CreateUserRequest, User, UserRole}
 import shared.forms.{FormData, Forms}
 import app.Reusabilities._
-import shared.messages.Languages
+import shared.messages.{Languages}
 
 import scala.scalajs.js
 
@@ -46,14 +46,12 @@ object CreateUserForm {
     def render(implicit props: Props, s: State) = {
       val formMethods = Forms.createUserForm
       implicit val fParams = FormCommonParams[CreateUserRequest, User](
-        formData = s.formData,
         formMethods = formMethods,
+        formData = s.formData,
         onChange = fd => $.modState(_.copy(formData = fd)).map(_ => fd),
-        beforeSubmit = props.ctx.openWaitPane,
         submitFunction = props.ctx.createUser,
         onSubmitSuccess = newUser => props.userCreated(newUser),
-        onSubmitFormCheckFailure = props.ctx.closeWaitPane,
-        editMode = false
+        windowFunc = props.ctx
       )
 
       Form()(
