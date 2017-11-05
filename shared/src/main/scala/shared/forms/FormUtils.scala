@@ -66,8 +66,17 @@ trait FormMethods[T] extends shared.utils.Enum[FormField[T, _]] with InputFormUt
   type Extractor[F] = T => F
   type Setter[F] = (T, F) => T
 
-  def validate(formData: FormData[T]): FormData[T] =
-    allElems.foldLeft(formData){case (fd, field) => field.validate(fd)}
+  protected def commonValidations: Seq[FormData[T] => Option[Message]]
+
+  def validate(formData: FormData[T]): FormData[T] = {
+    val formDataAfterCommonValidations = commonValidations.foldLeft(formData.copy(generalErrors = Nil)){
+      case (fd, validation) => validation(fd) match {
+        case Some(err) => fd.copy(generalErrors = err(fd.language) :: fd.generalErrors)
+        case None => fd
+      }
+    }
+    allElems.foldLeft(formDataAfterCommonValidations){case (fd, field) => field.validate(fd)}
+  }
 
   def validate(lang: Language, obj: T): FormData[T] =
     validate(FormData(lang, obj))

@@ -67,6 +67,16 @@ object CreateUserForm {
           FormSelect(
             field = formMethods.role,
             values = roles
+          ),
+          FormTextField(
+            field = formMethods.password,
+            onEscape = props.cancelCreatingUser,
+            password = true
+          ),
+          FormTextField(
+            field = formMethods.repeatPassword,
+            onEscape = props.cancelCreatingUser,
+            password = true
           )
         )
       )

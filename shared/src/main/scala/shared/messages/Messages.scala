@@ -26,4 +26,9 @@ object Messages {
     RU -> s"доступ запрещён",
     EN -> s"access denied"
   )
+
+  def fieldsShouldHaveSameValue(field1: String, field2: String)(implicit lang: Language) = Msg(
+    RU -> s"поля '$field1' и '$field2' должны иметь одинаковое значение",
+    EN -> s"'$field1' and '$field2' fields should have same value",
+  )
 }

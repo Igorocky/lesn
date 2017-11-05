@@ -36,5 +36,6 @@ case class User(id: Option[Long] = None,
 
 case class CreateUserRequest(login: String = "",
                              role: UserRole = UserRole.Pupil,
-                             password: String = ""
+                             password: String = "",
+                             repeatPassword: String = ""
                             )

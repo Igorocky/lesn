@@ -15,11 +15,12 @@ object FormTextField {
                              editMode: Boolean,
                              onEnter: Callback,
                              placeholder: String,
-                             onEscape: Callback)
+                             onEscape: Callback,
+                             password: Boolean)
 
   protected case class State()
 
-  def apply[T, S](field: FormField[T, String], focusOnMount: Boolean = false, onEscape: Callback = Callback.empty)
+  def apply[T, S](field: FormField[T, String], focusOnMount: Boolean = false, onEscape: Callback = Callback.empty, password: Boolean = false)
                  (implicit formParams: FormCommonParams[T, S]) =
     comp(Props(
       focusOnMount = focusOnMount
@@ -30,6 +31,7 @@ object FormTextField {
       ,onEnter = formParams.submit
       ,placeholder = field.label
       ,onEscape = onEscape
+      ,password = password
     ))
 
   private lazy val comp = react.ScalaComponent.builder[Props](this.getClass.getName)
@@ -45,6 +47,7 @@ object FormTextField {
       val field = Form.Field(error = props.errors.nonEmpty)(
         <.label(props.placeholder),
         <.input.text.ref(theInput = _)(
+          ^.`type`:=(if (props.password) "password" else "text"),
           ^.placeholder:=props.placeholder,
           ^.value := props.value,
           ^.onChange ==> { e: ReactEventFromInput => props.onChange(e.target.value).void },

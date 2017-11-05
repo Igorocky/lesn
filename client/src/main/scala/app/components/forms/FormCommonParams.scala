@@ -31,5 +31,5 @@ case class FormCommonParams[T, S](
     }
   }
 
-  def valueWasChanged[F](field: FormField[T, F])(newValue: F): Callback = onChange(field.setAndValidate(newValue, formData)).void
+  def valueWasChanged[F](field: FormField[T, F])(newValue: F): Callback = onChange(field.set(newValue, formData)).void
 }
