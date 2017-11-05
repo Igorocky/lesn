@@ -33,3 +33,8 @@ case class User(id: Option[Long] = None,
                 login: String = "",
                 language: Language = Languages.EN
                )
+
+case class CreateUserRequest(login: String = "",
+                             role: UserRole = UserRole.Pupil,
+                             password: String = ""
+                            )

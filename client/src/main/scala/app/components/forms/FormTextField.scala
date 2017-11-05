@@ -17,7 +17,7 @@ object FormTextField {
                              placeholder: String,
                              onEscape: Callback)
 
-  protected case class State(initialValue: String, focused: Boolean)
+  protected case class State()
 
   def apply[T, S](field: FormField[T, String], focusOnMount: Boolean = false, onEscape: Callback = Callback.empty)
                  (implicit formParams: FormCommonParams[T, S]) =
@@ -31,6 +31,12 @@ object FormTextField {
       ,placeholder = field.label
       ,onEscape = onEscape
     ))
+
+  private lazy val comp = react.ScalaComponent.builder[Props](this.getClass.getName)
+    .initialStateFromProps(p => State())
+    .renderBackend[Backend]
+    .componentDidMount{$ => if ($.props.focusOnMount) Callback($.backend.theInput.focus()) else Callback.empty}
+    .build
 
   protected class Backend($: BackendScope[Props, State]) {
     var theInput: html.Element = _
@@ -66,9 +72,4 @@ object FormTextField {
 
   }
 
-  private lazy val comp = react.ScalaComponent.builder[Props](this.getClass.getName)
-    .initialStateFromProps(p => State(initialValue = p.value, focused = !p.editMode))
-    .renderBackend[Backend]
-    .componentDidMount{$ => if ($.props.focusOnMount) Callback($.backend.theInput.focus()) else Callback.empty}
-    .build
 }

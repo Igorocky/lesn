@@ -3,18 +3,20 @@ package app.components.custom.userspage
 import app.actions.GlobalContext
 import app.components.custom.WindowFunc
 import app.components.forms.FormCommonParams.SubmitFunction
-import app.components.forms.{FormCommonParams, FormErrors, FormTextField}
+import app.components.forms.{FormCommonParams, FormErrors, FormSelect, FormTextField}
 import app.components.semanticui._
 import japgolly.scalajs.react.extra.Reusability
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
-import shared.dto.{User, UserFull}
+import shared.dto.{CreateUserRequest, User, UserRole}
 import shared.forms.{FormData, Forms}
 import app.Reusabilities._
 import shared.messages.Languages
 
+import scala.scalajs.js
+
 trait CreateUserFormActions {
-  def createUser: SubmitFunction[UserFull,User]
+  def createUser: SubmitFunction[CreateUserRequest,User]
 }
 
 object CreateUserForm {
@@ -26,18 +28,24 @@ object CreateUserForm {
   }
 
   implicit val stateReuse = Reusability.byRef[State]
-  case class State(formData: FormData[UserFull])
+  case class State(formData: FormData[CreateUserRequest])
 
   private lazy val comp = ScalaComponent.builder[Props](this.getClass.getName)
-    .initialStateFromProps(props => State(formData = FormData(Languages.EN, UserFull())))
+    .initialStateFromProps(props => State(formData = FormData(Languages.EN, CreateUserRequest())))
     .renderBackend[Backend]
     .configure(Reusability.shouldComponentUpdate)
     .build
 
+  private val roles = Map(
+    UserRole.Admin -> "Admin",
+    UserRole.Teacher -> "Teacher",
+    UserRole.Pupil -> "Pupil"
+  )
+
   class Backend($: BackendScope[Props, State]) {
     def render(implicit props: Props, s: State) = {
       val formMethods = Forms.createUserForm
-      implicit val fParams = FormCommonParams[UserFull, User](
+      implicit val fParams = FormCommonParams[CreateUserRequest, User](
         formData = s.formData,
         formMethods = formMethods,
         onChange = fd => $.modState(_.copy(formData = fd)).map(_ => fd),
@@ -47,6 +55,7 @@ object CreateUserForm {
         onSubmitFormCheckFailure = props.ctx.closeWaitPane,
         editMode = false
       )
+
       Form()(
         FormErrors(),
         Form.Group()(
@@ -54,6 +63,10 @@ object CreateUserForm {
             field = formMethods.login,
             focusOnMount = true,
             onEscape = props.cancelCreatingUser
+          ),
+          FormSelect(
+            field = formMethods.role,
+            values = roles
           )
         )
       )

@@ -76,4 +76,24 @@ object Form {
     }
   }
 
+  object Select {
+    val component = react.JsComponent[js.Object, Children.Varargs, Null](SemanticUiComponents.Form.Select)
+
+    def apply(placeholder: js.UndefOr[String] = js.undefined,
+              label: js.UndefOr[String] = js.undefined,
+              options: js.UndefOr[js.Object] = js.undefined,
+              onChange: String => Callback = _ => Callback.empty,
+              value: js.UndefOr[String] = js.undefined,
+             )(children: VdomNode*) = {
+      val props = js.Dynamic.literal(
+        placeholder = placeholder,
+        options = options,
+        label = label,
+        value = value,
+        onChange = (_: Any, e: js.Dynamic) => onChange(e.value.asInstanceOf[String]).runNow(),
+      )
+      component(props)(children:_*)
+    }
+  }
+
 }
